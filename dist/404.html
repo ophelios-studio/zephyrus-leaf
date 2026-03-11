@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: '#08080d',
+                surface: '#11111a',
+                elevated: '#1a1a27',
+                border: '#1e1e2e',
+                'border-accent': 'rgba(139, 92, 246, 0.3)',
+                body: '#d4d4d8',
+                bright: '#fafafa',
+                muted: '#52525b',
+                accent: '#8b5cf6',
+                'accent-light': '#a78bfa',
+                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+    <title>Page Not Found</title>
+<style>
+    .error-container { min-height: calc(100vh - 4rem - 200px); display: flex; align-items: center; justify-content: center; }
+    .error-code { font-size: 8rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .error-title { font-size: 1.5rem; font-weight: 600; color: var(--text-bright); margin-top: 0.5rem; }
+    .error-message { color: var(--text-muted); margin-top: 0.75rem; max-width: 28rem; }
+    .error-links { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .error-link-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; background: var(--accent); color: white; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; text-decoration: none; transition: background 0.15s; }
+    .error-link-primary:hover { background: var(--accent-light); }
+    .error-link-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+    .error-link-secondary:hover { border-color: var(--border-accent); color: var(--text-bright); }
+</style>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 text-bright font-semibold text-lg no-underline">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 6 L24 6 L16 16 L24 26 L8 26 L16 16 Z" fill="currentColor" opacity="0.9"></path>
+            </svg>
+            <span>My Project</span>
+        </a>
+        <nav class="flex items-center gap-5">
+            <a href="/docs" class="nav-link">Docs</a>
+            <span class="version-badge">1.0.0</span>
+        </nav>
+    </div>
+</header>
+<div class="error-container">
+    <div class="text-center">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page not found</h1>
+        <p class="error-message">
+            The page you're looking for doesn't exist or has been moved.
+            Maybe it was blown away by a gentle breeze.
+        </p>
+        <div class="error-links">
+            <a href="/" class="error-link-primary">Home</a>
+            <a href="/docs" class="error-link-secondary">Documentation</a>
+        </div>
+    </div>
+</div>
+<footer class="site-footer">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
+        <div class="flex items-center gap-6">
+            <span>MIT License</span>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+</body>
+</html>
