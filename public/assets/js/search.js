@@ -1,7 +1,7 @@
 /**
  * Client-side fuzzy search for documentation.
  *
- * Loads /docs/search.json on first open, then filters results as you type.
+ * Loads /search.json on first open, then filters results as you type.
  * Supports keyboard navigation (up/down arrows, Enter, Escape).
  */
 (function () {
@@ -174,7 +174,7 @@
     // ── Helpers ─────────────────────────────────────────────────
     function loadIndex() {
         if (searchIndex) return;
-        fetch('/docs/search.json')
+        fetch('/search.json')
             .then(function (r) { return r.json(); })
             .then(function (data) { searchIndex = data; })
             .catch(function () { searchIndex = []; });

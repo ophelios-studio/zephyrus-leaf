@@ -48,15 +48,15 @@ if (is_dir($contentDir)) {
         $files = glob($sectionDir . '/*.md');
         foreach ($files as $file) {
             $slug = basename($file, '.md');
-            $path = "/docs/{$section}/{$slug}";
+            $path = "/{$section}/{$slug}";
             $builder->addPath($path);
             $docPaths[] = $path;
         }
     }
 }
 
-// Exclude the search index JSON and /docs redirect from static page rendering.
-$builder->excludePatterns(['#^/docs/search\.json$#', '#^/docs$#']);
+// Exclude the search index JSON and / redirect from static page rendering.
+$builder->excludePatterns(['#^/search\.json$#', '#^/$#']);
 
 $result = $builder->build();
 
@@ -77,18 +77,13 @@ $searchIndexBuilder = new SearchIndexBuilder(
     new MarkdownParser(),
 );
 $index = $searchIndexBuilder->build();
-$searchJsonPath = $outputDir . '/docs/search.json';
-$searchDir = dirname($searchJsonPath);
-if (!is_dir($searchDir)) {
-    mkdir($searchDir, 0755, true);
-}
+$searchJsonPath = $outputDir . '/search.json';
 file_put_contents($searchJsonPath, json_encode($index, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 echo "  -> " . count($index) . " pages indexed" . PHP_EOL;
 
-// Generate a redirect index.html for /docs/ -> first page.
-$docsIndexPath = $outputDir . '/docs/index.html';
+// Generate a redirect index.html for / -> first doc page.
 $firstPageUrl = $app->getContentLoader()->getFirstPageUrl() . '/';
-$redirectHtml = <<<HTML
+$rootRedirectHtml = <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,8 +96,8 @@ $redirectHtml = <<<HTML
 </body>
 </html>
 HTML;
-file_put_contents($docsIndexPath, $redirectHtml);
-echo "  -> /docs/index.html redirect created" . PHP_EOL;
+file_put_contents($outputDir . '/index.html', $rootRedirectHtml);
+echo "  -> /index.html redirect created" . PHP_EOL;
 
 // Move /404/index.html to /404.html (GitHub Pages convention).
 $notFoundSource = $outputDir . '/404/index.html';
