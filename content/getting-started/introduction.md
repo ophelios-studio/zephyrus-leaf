@@ -59,5 +59,5 @@ The order in the YAML file determines the sidebar order.
 ## Next steps
 
 - Edit `config.yml` to set your project name, version, and GitHub URL
-- Customize the landing page at `app/Views/landing.latte`
+- Add your logo to `public/assets/images/` and update `app/Views/partials/nav.latte`
 - Run `composer build` to generate the static site

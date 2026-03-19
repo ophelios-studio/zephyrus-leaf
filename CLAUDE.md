@@ -45,8 +45,7 @@
 
 | File | Purpose |
 |---|---|
-| `Controllers/LandingController.php` | `GET /` — renders `landing.latte` |
-| `Controllers/DocsController.php` | `GET /docs` (redirect), `GET /docs/{section}/{slug}` (page), `GET /docs/search.json` (index) |
+| `Controllers/DocsController.php` | `GET /` (redirect to first page), `GET /{section}/{slug}` (page), `GET /search.json` (index), `GET /404` (error page) |
 | `Models/Core/Kernel.php` | Abstract bootstrap: loads config, creates Latte engine with `LeafLatteExtension`, wires controllers with dependency injection, registers 404 handler |
 | `Models/Core/Application.php` | Concrete `Kernel` subclass (empty — relies on parent defaults) |
 
@@ -55,7 +54,6 @@
 ```
 app/Views/
 ├── 404.latte                 # Themed 404 page
-├── landing.latte             # Landing/home page (user edits directly, NOT config-driven)
 ├── docs/page.latte           # Documentation page template
 ├── layouts/
 │   ├── docs.latte            # Docs layout (sidebar + content + TOC)
@@ -138,7 +136,7 @@ composer test    # Run PHPUnit (58 tests)
 | File | Purpose |
 |---|---|
 | `bin/router.php` | Dev server entry — defines `DEV_SERVER` constant, delegates to `DevRouter`. **Must `return false` at top-level scope** for static file serving. |
-| `bin/build.php` | Static build entry — boots Application, uses `StaticSiteBuilder`, generates search index, creates `/docs/` redirect and GitHub Pages 404. |
+| `bin/build.php` | Static build entry — boots Application, uses `StaticSiteBuilder`, generates search index, creates root redirect and GitHub Pages 404. |
 | `public/index.php` | Web entry point (production). |
 | `public/assets/css/app.css` | 937-line dark theme CSS. |
 | `public/assets/js/copy-code.js` | Code block copy button. |
@@ -161,4 +159,5 @@ composer test    # Run PHPUnit (58 tests)
 - **Tests for every change**
 - **`dist/` committed** to repo (no CI build needed, deploy direct to GitHub Pages)
 - **No light theme** — single dark theme only
-- **Landing page NOT config-driven** — users edit the Latte template directly
+- **No landing page** — `/` redirects to first documentation page. The site is docs-only.
+- **No `/docs` prefix** — URLs are `/{section}/{slug}` directly
