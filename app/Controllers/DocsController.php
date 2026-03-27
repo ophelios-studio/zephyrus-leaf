@@ -71,7 +71,7 @@ final class DocsController extends Controller
     }
 
     /**
-     * Prefix internal links in rendered HTML with the configured base URL.
+     * Prefix internal links and asset sources in rendered HTML with the configured base URL.
      */
     private function prefixInternalLinks(string $html): string
     {
@@ -80,8 +80,8 @@ final class DocsController extends Controller
             return $html;
         }
         return preg_replace(
-            '#href="(/(?!/)[^"]*)"#',
-            'href="' . $baseUrl . '$1"',
+            '#(href|src)="(/(?!/)[^"]*)"#',
+            '$1="' . $baseUrl . '$2"',
             $html,
         );
     }
