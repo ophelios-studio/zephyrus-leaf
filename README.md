@@ -1,6 +1,6 @@
 # Zephyrus Leaf
 
-A static documentation site generator powered by [Zephyrus 2](https://github.com/dadajuice/zephyrus2). Write your docs in Markdown, develop with live-reload, and build to static HTML with a single command.
+A static documentation site generator powered by [Zephyrus](https://github.com/zephyrus-framework/core). Write your docs in Markdown, develop with live-reload, and build to static HTML with a single command.
 
 ## Features
 
