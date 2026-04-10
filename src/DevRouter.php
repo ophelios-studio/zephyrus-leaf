@@ -49,6 +49,20 @@ final class DevRouter
             return true;
         }
 
+        // Locale prefix stripping: /en/... or /fr/... → strip and store locale.
+        if (preg_match('#^/([a-z]{2})(/.*)?$#', $uri, $matches)) {
+            $possibleLocale = $matches[1];
+            $remainder = $matches[2] ?? '/';
+            // Only strip if it looks like a locale (2-letter code) and the path
+            // without prefix doesn't map to a static file.
+            $publicPath = $this->projectRoot . '/public' . $uri;
+            if (!is_file($publicPath)) {
+                $_SERVER['LEAF_LOCALE'] = $possibleLocale;
+                $_SERVER['REQUEST_URI'] = $remainder;
+                $uri = $remainder;
+            }
+        }
+
         // Static file from public/.
         $publicPath = $this->projectRoot . '/public' . $uri;
         if ($uri !== '/' && is_file($publicPath)) {

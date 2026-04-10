@@ -44,6 +44,12 @@ abstract class Kernel
 
     public function run(): void
     {
+        // Apply locale override from DevRouter (e.g. /fr/... prefix stripping).
+        $localeOverride = $_SERVER['LEAF_LOCALE'] ?? null;
+        if ($localeOverride !== null && $this->translationExtension !== null) {
+            $this->translationExtension->setCurrentLocale($localeOverride);
+        }
+
         [$app] = $this->buildApplication();
         $request = Request::fromGlobals();
         $response = $app->handle($request);
