@@ -70,23 +70,33 @@ final class TranslationLatteExtensionTest extends TestCase
     }
 
     #[Test]
-    public function transCallableTranslatesKeys(): void
+    public function localizeFunctionTranslatesKeys(): void
     {
         $ext = $this->createExtension();
         $latte = $this->createEngine($ext);
 
-        $result = $latte->renderToString('{$trans("hero.title")}');
+        $result = $latte->renderToString('{localize("hero.title")}');
         $this->assertSame('Welcome', $result);
     }
 
     #[Test]
-    public function transSupportsParameterInterpolation(): void
+    public function localizeSupportsParameterInterpolation(): void
     {
         $ext = $this->createExtension();
         $latte = $this->createEngine($ext);
 
-        $result = $latte->renderToString('{$trans("hero.greeting", ["name" => "World"])}');
+        $result = $latte->renderToString('{localize("hero.greeting", ["name" => "World"])}');
         $this->assertSame('Hello World', $result);
+    }
+
+    #[Test]
+    public function i18nIsAliasForLocalize(): void
+    {
+        $ext = $this->createExtension();
+        $latte = $this->createEngine($ext);
+
+        $result = $latte->renderToString('{i18n("hero.title")}');
+        $this->assertSame('Welcome', $result);
     }
 
     #[Test]
@@ -115,12 +125,12 @@ final class TranslationLatteExtensionTest extends TestCase
         $ext = $this->createExtension();
         $latte = $this->createEngine($ext);
 
-        $resultEn = $latte->renderToString('{$trans("hero.title")}');
+        $resultEn = $latte->renderToString('{localize("hero.title")}');
         $this->assertSame('Welcome', $resultEn);
 
         $ext->setCurrentLocale('fr');
 
-        $resultFr = $latte->renderToString('{$trans("hero.title")}');
+        $resultFr = $latte->renderToString('{localize("hero.title")}');
         $this->assertSame('Bienvenue', $resultFr);
     }
 
@@ -145,12 +155,12 @@ final class TranslationLatteExtensionTest extends TestCase
     }
 
     #[Test]
-    public function missingKeyReturnKeyItself(): void
+    public function missingKeyReturnsKeyItself(): void
     {
         $ext = $this->createExtension();
         $latte = $this->createEngine($ext);
 
-        $result = $latte->renderToString('{$trans("nonexistent.key")}');
+        $result = $latte->renderToString('{localize("nonexistent.key")}');
         $this->assertSame('nonexistent.key', $result);
     }
 }
