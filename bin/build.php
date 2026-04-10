@@ -35,6 +35,18 @@ $builder->setOutputDirectory($outputDir);
 $builder->setPublicDirectory(ROOT_DIR . '/public');
 $builder->setBaseUrl('http://localhost');
 
+// Configure multi-locale build if multiple locales are supported.
+$localizationConfig = $app->getConfig()->localization;
+$supportedLocales = $localizationConfig->supportedLocales;
+$isMultiLocale = count($supportedLocales) > 1;
+if ($isMultiLocale) {
+    $builder->setLocales($supportedLocales, $localizationConfig->locale);
+    $translationExt = $app->getTranslationExtension();
+    if ($translationExt !== null) {
+        $builder->setTranslationExtension($translationExt);
+    }
+}
+
 // Add explicit paths for parameterized routes (docs pages).
 $contentDir = ROOT_DIR . '/' . ltrim($leafConfig->contentPath, '/');
 $docPaths = [];
@@ -82,23 +94,28 @@ $searchJsonPath = $outputDir . '/search.json';
 file_put_contents($searchJsonPath, json_encode($index, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 echo "  -> " . count($index) . " pages indexed" . PHP_EOL;
 
-// Generate a redirect index.html for / -> first doc page.
-$firstPageUrl = $app->getContentLoader()->getFirstPageUrl() . '/';
-$rootRedirectHtml = <<<HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url={$firstPageUrl}">
-    <title>Redirecting...</title>
-</head>
-<body>
-    <p>Redirecting to <a href="{$firstPageUrl}">documentation</a>...</p>
-</body>
-</html>
-HTML;
-file_put_contents($outputDir . '/index.html', $rootRedirectHtml);
-echo "  -> /index.html redirect created" . PHP_EOL;
+// Generate a redirect index.html for / -> first doc page (single-locale only).
+// Multi-locale builds generate their own root redirect via StaticSiteBuilder.
+if (!$isMultiLocale) {
+    $firstPageUrl = $app->getContentLoader()->getFirstPageUrl() . '/';
+    $rootRedirectHtml = <<<HTML
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="0;url={$firstPageUrl}">
+        <title>Redirecting...</title>
+    </head>
+    <body>
+        <p>Redirecting to <a href="{$firstPageUrl}">documentation</a>...</p>
+    </body>
+    </html>
+    HTML;
+    file_put_contents($outputDir . '/index.html', $rootRedirectHtml);
+    echo "  -> /index.html redirect created" . PHP_EOL;
+} else {
+    echo "  -> locale redirect created (multi-locale)" . PHP_EOL;
+}
 
 // Move /404/index.html to /404.html (GitHub Pages convention).
 $notFoundSource = $outputDir . '/404/index.html';

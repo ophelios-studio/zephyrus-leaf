@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{$currentLocale ?? 'en'}">
 <head>
     {include '../partials/head.latte'}
     <title>{$title ?? 'Welcome'}</title>
+    {block styles}{/block}
     {block head}{/block}
 </head>
 <body class="bg-deep text-body antialiased font-body">

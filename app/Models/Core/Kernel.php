@@ -11,10 +11,13 @@ use Leaf\Content\ContentLoader;
 use Leaf\Content\MarkdownParser;
 use Leaf\Content\SearchIndexBuilder;
 use Leaf\LeafLatteExtension;
+use Leaf\Localization\TranslationLatteExtension;
 use Zephyrus\Core\ApplicationBuilder;
 use Zephyrus\Core\Config\Configuration;
 use Zephyrus\Http\Request;
 use Zephyrus\Http\Response;
+use Zephyrus\Localization\JsonLocaleLoader;
+use Zephyrus\Localization\Translator;
 use Zephyrus\Rendering\LatteEngine;
 use Zephyrus\Rendering\RenderConfig;
 use Zephyrus\Routing\Exception\RouteNotFoundException;
@@ -28,6 +31,8 @@ abstract class Kernel
     protected MarkdownParser $markdownParser;
     protected ContentLoader $contentLoader;
     protected SearchIndexBuilder $searchIndexBuilder;
+    protected ?TranslationLatteExtension $translationExtension = null;
+    protected ?Translator $translator = null;
 
     public function __construct()
     {
@@ -71,6 +76,16 @@ abstract class Kernel
     public function getContentLoader(): ContentLoader
     {
         return $this->contentLoader;
+    }
+
+    public function getTranslationExtension(): ?TranslationLatteExtension
+    {
+        return $this->translationExtension;
+    }
+
+    public function getTranslator(): ?Translator
+    {
+        return $this->translator;
     }
 
     protected function registerControllers(Router $router): Router
@@ -140,5 +155,18 @@ abstract class Kernel
         $this->markdownParser = new MarkdownParser();
         $this->contentLoader = new ContentLoader($contentDir, $this->markdownParser, $this->leafConfig);
         $this->searchIndexBuilder = new SearchIndexBuilder($contentDir, $this->markdownParser);
+
+        $localizationConfig = $this->config->localization;
+        if ($localizationConfig->localePath !== null && $localizationConfig->localePath !== '') {
+            $localePath = ROOT_DIR . '/' . ltrim($localizationConfig->localePath, '/');
+            $loader = new JsonLocaleLoader($localePath);
+            $this->translator = new Translator($loader, $localizationConfig->locale);
+            $this->translationExtension = new TranslationLatteExtension(
+                $this->translator,
+                $localizationConfig->locale,
+                $localizationConfig->supportedLocales,
+            );
+            $this->renderEngine->addExtension($this->translationExtension);
+        }
     }
 }

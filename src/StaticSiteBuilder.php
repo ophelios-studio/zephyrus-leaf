@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leaf;
 
+use Leaf\Localization\TranslationLatteExtension;
 use Zephyrus\Core\Application;
 use Zephyrus\Http\Request;
 use Zephyrus\Routing\Router;
@@ -37,6 +38,13 @@ final class StaticSiteBuilder
 
     /** @var list<string> */
     private array $assetExcludes = ['index.php', '.htaccess'];
+
+    /** @var list<string> */
+    private array $locales = [];
+
+    private string $defaultLocale = 'en';
+
+    private ?TranslationLatteExtension $translationExtension = null;
 
     public function __construct(
         private readonly Application $application,
@@ -90,16 +98,48 @@ final class StaticSiteBuilder
         $this->assetExcludes = $filenames;
     }
 
+    /**
+     * @param list<string> $locales
+     */
+    public function setLocales(array $locales, string $defaultLocale): void
+    {
+        $this->locales = $locales;
+        $this->defaultLocale = $defaultLocale;
+    }
+
+    public function setTranslationExtension(TranslationLatteExtension $extension): void
+    {
+        $this->translationExtension = $extension;
+    }
+
     public function build(): StaticBuildResult
     {
         if ($this->outputDirectory === '') {
             throw new \RuntimeException('Output directory must be set before building.');
         }
 
+        if ($this->locales !== [] && count($this->locales) > 1) {
+            return $this->buildMultiLocale();
+        }
+
+        $result = $this->buildSingleLocale($this->outputDirectory);
+
+        if ($this->publicDirectory !== '' && is_dir($this->publicDirectory)) {
+            $this->copyAssets();
+        }
+
+        return $result;
+    }
+
+    private function buildSingleLocale(string $outputDir): StaticBuildResult
+    {
         $startTime = hrtime(true);
         $paths = $this->collectPaths();
         $pagesBuilt = 0;
         $errors = [];
+
+        $originalOutputDir = $this->outputDirectory;
+        $this->outputDirectory = $outputDir;
 
         foreach ($paths as $path) {
             try {
@@ -122,10 +162,7 @@ final class StaticSiteBuilder
             }
         }
 
-        if ($this->publicDirectory !== '' && is_dir($this->publicDirectory)) {
-            $this->copyAssets();
-        }
-
+        $this->outputDirectory = $originalOutputDir;
         $elapsed = (hrtime(true) - $startTime) / 1_000_000;
 
         return new StaticBuildResult(
@@ -133,8 +170,80 @@ final class StaticSiteBuilder
             totalPaths: count($paths),
             elapsedMs: round($elapsed, 2),
             errors: $errors,
+            outputDirectory: $outputDir,
+        );
+    }
+
+    private function buildMultiLocale(): StaticBuildResult
+    {
+        $startTime = hrtime(true);
+        $totalPages = 0;
+        $totalPaths = 0;
+        $allErrors = [];
+
+        foreach ($this->locales as $locale) {
+            if ($this->translationExtension !== null) {
+                $this->translationExtension->setCurrentLocale($locale);
+            }
+
+            $localeOutputDir = $this->outputDirectory . '/' . $locale;
+            $result = $this->buildSingleLocale($localeOutputDir);
+
+            $totalPages += $result->pagesBuilt;
+            $totalPaths += $result->totalPaths;
+
+            foreach ($result->errors as $error) {
+                $allErrors[] = "[{$locale}] {$error}";
+            }
+        }
+
+        if ($this->publicDirectory !== '' && is_dir($this->publicDirectory)) {
+            $this->copyAssets();
+        }
+
+        $this->writeLocaleRedirect();
+
+        $elapsed = (hrtime(true) - $startTime) / 1_000_000;
+
+        return new StaticBuildResult(
+            pagesBuilt: $totalPages,
+            totalPaths: $totalPaths,
+            elapsedMs: round($elapsed, 2),
+            errors: $allErrors,
             outputDirectory: $this->outputDirectory,
         );
+    }
+
+    private function writeLocaleRedirect(): void
+    {
+        $default = $this->defaultLocale;
+        $localesJs = json_encode($this->locales);
+        $html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0;url=/{$default}/">
+            <script>
+            (function() {
+                var supported = {$localesJs};
+                var lang = (navigator.language || '').slice(0, 2).toLowerCase();
+                if (supported.indexOf(lang) !== -1) {
+                    window.location.replace('/' + lang + '/');
+                }
+            })();
+            </script>
+        </head>
+        <body>Redirecting...</body>
+        </html>
+        HTML;
+
+        $path = $this->outputDirectory . '/index.html';
+        $dir = dirname($path);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+        file_put_contents($path, $html);
     }
 
     /**
