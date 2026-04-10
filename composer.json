@@ -19,7 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.4",
-        "dadajuice/zephyrus2": "@dev",
+        "zephyrus-framework/core": "@dev",
         "league/commonmark": "^2.8",
         "league/config": "^1.2",
         "ext-intl": "*",
