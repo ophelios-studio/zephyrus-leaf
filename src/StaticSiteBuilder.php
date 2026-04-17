@@ -190,7 +190,9 @@ final class StaticSiteBuilder
                 $this->translationExtension->setCurrentLocale($locale);
             }
 
-            $localeOutputDir = $this->outputDirectory . '/' . $locale;
+            $localeOutputDir = ($locale === $this->defaultLocale)
+                ? $this->outputDirectory
+                : $this->outputDirectory . '/' . $locale;
             $result = $this->buildSingleLocale($localeOutputDir);
 
             $totalPages += $result->pagesBuilt;
@@ -208,8 +210,6 @@ final class StaticSiteBuilder
             $this->copyAssets();
         }
 
-        $this->writeLocaleRedirect();
-
         $elapsed = (hrtime(true) - $startTime) / 1_000_000;
 
         return new StaticBuildResult(
@@ -222,37 +222,6 @@ final class StaticSiteBuilder
         );
     }
 
-    private function writeLocaleRedirect(): void
-    {
-        $default = $this->defaultLocale;
-        $localesJs = json_encode($this->locales);
-        $html = <<<HTML
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="refresh" content="0;url=/{$default}/">
-            <script>
-            (function() {
-                var supported = {$localesJs};
-                var lang = (navigator.language || '').slice(0, 2).toLowerCase();
-                if (supported.indexOf(lang) !== -1) {
-                    window.location.replace('/' + lang + '/');
-                }
-            })();
-            </script>
-        </head>
-        <body>Redirecting...</body>
-        </html>
-        HTML;
-
-        $path = $this->outputDirectory . '/index.html';
-        $dir = dirname($path);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
-        file_put_contents($path, $html);
-    }
 
     /**
      * @return list<string>

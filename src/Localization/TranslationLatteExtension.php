@@ -34,7 +34,7 @@ final class TranslationLatteExtension extends Extension
      */
     public function __construct(
         private readonly Translator $translator,
-        string $defaultLocale,
+        private readonly string $defaultLocale,
         private readonly array $supportedLocales,
     ) {
         $this->currentLocale = $defaultLocale;
@@ -79,9 +79,14 @@ final class TranslationLatteExtension extends Extension
 
         $existing = $template->getParameters();
 
-        $setter = \Closure::bind(function () use ($locale, $supportedLocales, $existing): void {
+        $defaultLocale = $this->defaultLocale;
+
+        $setter = \Closure::bind(function () use ($locale, $defaultLocale, $supportedLocales, $existing): void {
             if (!array_key_exists('currentLocale', $existing)) {
                 $this->params['currentLocale'] = $locale;
+            }
+            if (!array_key_exists('defaultLocale', $existing)) {
+                $this->params['defaultLocale'] = $defaultLocale;
             }
             if (!array_key_exists('supportedLocales', $existing)) {
                 $this->params['supportedLocales'] = $supportedLocales;

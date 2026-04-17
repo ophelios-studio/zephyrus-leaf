@@ -46,17 +46,17 @@ final class SitemapGenerator
         foreach ($locales as $locale) {
             foreach ($pages as $path) {
                 $suffix = $path === '/' ? '/' : rtrim($path, '/') . '/';
-                $loc = $this->baseUrl . '/' . $locale . $suffix;
+                $loc = $this->localeUrl($locale, $suffix, $defaultLocale);
 
                 $xml .= "  <url>\n";
                 $xml .= '    <loc>' . $this->escape($loc) . '</loc>' . "\n";
 
                 foreach ($locales as $altLocale) {
-                    $altHref = $this->baseUrl . '/' . $altLocale . $suffix;
+                    $altHref = $this->localeUrl($altLocale, $suffix, $defaultLocale);
                     $xml .= '    <xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $this->escape($altHref) . '"/>' . "\n";
                 }
 
-                $defaultHref = $this->baseUrl . '/' . $defaultLocale . $suffix;
+                $defaultHref = $this->localeUrl($defaultLocale, $suffix, $defaultLocale);
                 $xml .= '    <xhtml:link rel="alternate" hreflang="x-default" href="' . $this->escape($defaultHref) . '"/>' . "\n";
                 $xml .= "  </url>\n";
             }
@@ -64,6 +64,14 @@ final class SitemapGenerator
 
         $xml .= '</urlset>' . "\n";
         file_put_contents($this->outputDirectory . '/sitemap.xml', $xml);
+    }
+
+    private function localeUrl(string $locale, string $suffix, string $defaultLocale): string
+    {
+        if ($locale === $defaultLocale) {
+            return $this->baseUrl . $suffix;
+        }
+        return $this->baseUrl . '/' . $locale . $suffix;
     }
 
     private function escape(string $value): string
