@@ -1,0 +1,15 @@
+[
+    {
+        "title": "Introduction",
+        "section": "getting-started",
+        "url": "\/getting-started\/introduction",
+        "excerpt": "Introduction Welcome to your new documentation site, powered by Zephyrus Leaf. #What is Leaf? Leaf is a static content site template built on the Zephyrus PHP framework. It gives you: Markdown-powered pages with front matter, GFM tables, and syntax highlighting Live-reload during development — edit ...",
+        "headings": [
+            "What is Leaf?",
+            "Quick start",
+            "Adding pages",
+            "Adding sections",
+            "Next steps"
+        ]
+    }
+]

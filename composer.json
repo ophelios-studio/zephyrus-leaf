@@ -1,6 +1,6 @@
 {
-    "name": "dadajuice/zephyrus-leaf",
-    "description": "Static content sites powered by Zephyrus. Docs, blogs, landing pages — with live-reload and one-command builds.",
+    "name": "ophelios/leaf",
+    "description": "Project template for Zephyrus Leaf static sites. Docs, blogs, landing pages.",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -13,38 +13,32 @@
         {
             "type": "path",
             "url": "../zephyrus2"
+        },
+        {
+            "type": "path",
+            "url": "../zephyrus-leaf-core"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^8.4",
-        "zephyrus-framework/core": "@dev",
-        "league/commonmark": "^2.8",
-        "league/config": "^1.2",
+        "dadajuice/zephyrus-leaf": "@dev",
         "ext-intl": "*",
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.0",
         "symfony/var-dumper": "*"
     },
     "autoload": {
         "psr-4": {
-            "Leaf\\": "src/",
             "App\\Controllers\\": "app/Controllers",
             "App\\Models\\": "app/Models"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Leaf\\Tests\\": "tests/"
-        }
-    },
     "scripts": {
         "dev": "php -S localhost:8080 -t public bin/router.php",
-        "build": "php bin/build.php",
-        "test": "vendor/bin/phpunit"
+        "build": "php bin/build.php"
     },
     "config": {
         "sort-packages": true,
