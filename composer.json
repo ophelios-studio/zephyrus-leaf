@@ -23,7 +23,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.4",
-        "dadajuice/zephyrus-leaf": "@dev",
+        "zephyrus-framework/leaf-core": "@dev",
         "ext-intl": "*",
         "ext-mbstring": "*"
     },
