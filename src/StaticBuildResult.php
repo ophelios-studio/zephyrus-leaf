@@ -11,6 +11,7 @@ final readonly class StaticBuildResult
 {
     /**
      * @param list<string> $errors
+     * @param list<string> $builtPages Locale-agnostic paths that were successfully built
      */
     public function __construct(
         public int $pagesBuilt,
@@ -18,6 +19,7 @@ final readonly class StaticBuildResult
         public float $elapsedMs,
         public array $errors,
         public string $outputDirectory,
+        public array $builtPages = [],
     ) {
     }
 

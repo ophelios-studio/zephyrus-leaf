@@ -137,6 +137,7 @@ final class StaticSiteBuilder
         $paths = $this->collectPaths();
         $pagesBuilt = 0;
         $errors = [];
+        $builtPages = [];
 
         $originalOutputDir = $this->outputDirectory;
         $this->outputDirectory = $outputDir;
@@ -156,6 +157,7 @@ final class StaticSiteBuilder
                 }
 
                 $this->writePage($path, $response->body);
+                $builtPages[] = $path;
                 $pagesBuilt++;
             } catch (\Throwable $e) {
                 $errors[] = sprintf('%s failed: %s', $path, $e->getMessage());
@@ -171,6 +173,7 @@ final class StaticSiteBuilder
             elapsedMs: round($elapsed, 2),
             errors: $errors,
             outputDirectory: $outputDir,
+            builtPages: $builtPages,
         );
     }
 
@@ -180,6 +183,7 @@ final class StaticSiteBuilder
         $totalPages = 0;
         $totalPaths = 0;
         $allErrors = [];
+        $builtPages = [];
 
         foreach ($this->locales as $locale) {
             if ($this->translationExtension !== null) {
@@ -191,6 +195,9 @@ final class StaticSiteBuilder
 
             $totalPages += $result->pagesBuilt;
             $totalPaths += $result->totalPaths;
+            if (empty($builtPages)) {
+                $builtPages = $result->builtPages;
+            }
 
             foreach ($result->errors as $error) {
                 $allErrors[] = "[{$locale}] {$error}";
@@ -211,6 +218,7 @@ final class StaticSiteBuilder
             elapsedMs: round($elapsed, 2),
             errors: $allErrors,
             outputDirectory: $this->outputDirectory,
+            builtPages: $builtPages,
         );
     }
 
