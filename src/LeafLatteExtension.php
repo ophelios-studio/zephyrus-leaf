@@ -37,6 +37,7 @@ final class LeafLatteExtension extends Extension
             'leafAuthorUrl' => $config->authorUrl,
             'leafLicense' => $config->license,
             'leafBaseUrl' => rtrim($config->baseUrl, '/'),
+            'leafProductionUrl' => $config->productionUrl !== '' ? rtrim($config->productionUrl, '/') : '',
         ];
     }
 

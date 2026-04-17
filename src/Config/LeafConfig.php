@@ -36,6 +36,7 @@ final class LeafConfig extends ConfigSection
     public readonly string $author;
     public readonly string $authorUrl;
     public readonly string $license;
+    public readonly string $productionUrl;
 
     /** @var array<string, string> slug => label, ordered */
     public readonly array $sections;
@@ -53,6 +54,7 @@ final class LeafConfig extends ConfigSection
         $instance->author = $instance->getString('author', '');
         $instance->authorUrl = $instance->getString('authorUrl', '');
         $instance->license = $instance->getString('license', 'MIT');
+        $instance->productionUrl = $instance->getString('productionUrl', '');
         $instance->sections = $instance->parseSections();
         return $instance;
     }
