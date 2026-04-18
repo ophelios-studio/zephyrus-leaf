@@ -1,10 +1,11 @@
 /* ============================================================
-   Zephyrus Leaf — Dark Theme
-   Electric violet on deep black. Serious and nice.
+   Zephyrus Leaf — Light & Dark Theme
+   Electric violet accent. System-preference aware.
    ============================================================ */
 
 /* ── Design Tokens ────────────────────────────────────────── */
 :root {
+    /* Dark theme (default) */
     --bg-deep: #08080d;
     --bg-surface: #11111a;
     --bg-elevated: #1a1a27;
@@ -16,12 +17,133 @@
     --accent: #8b5cf6;
     --accent-light: #a78bfa;
     --accent-glow: rgba(139, 92, 246, 0.15);
+    --nav-bg: rgba(8, 8, 13, 0.85);
+    --overlay-bg: rgba(8, 8, 13, 0.6);
+    --search-overlay: rgba(8, 8, 13, 0.7);
+    --code-tab-header: rgba(17, 17, 26, 0.5);
     --font-body: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     --nav-height: 4rem;
     --sidebar-width: 16rem;
     --toc-width: 14rem;
     --content-max: 48rem;
+    color-scheme: dark;
+}
+
+/* Light theme */
+[data-theme="light"] {
+    --bg-deep: #ffffff;
+    --bg-surface: #f8f8fa;
+    --bg-elevated: #f0f0f4;
+    --border: #e4e4e8;
+    --border-accent: rgba(139, 92, 246, 0.25);
+    --text: #3f3f46;
+    --text-bright: #18181b;
+    --text-muted: #a1a1aa;
+    --accent: #7c3aed;
+    --accent-light: #6d28d9;
+    --accent-glow: rgba(139, 92, 246, 0.08);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --overlay-bg: rgba(255, 255, 255, 0.6);
+    --search-overlay: rgba(255, 255, 255, 0.7);
+    --code-tab-header: rgba(248, 248, 250, 0.5);
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        --bg-deep: #ffffff;
+        --bg-surface: #f8f8fa;
+        --bg-elevated: #f0f0f4;
+        --border: #e4e4e8;
+        --border-accent: rgba(139, 92, 246, 0.25);
+        --text: #3f3f46;
+        --text-bright: #18181b;
+        --text-muted: #a1a1aa;
+        --accent: #7c3aed;
+        --accent-light: #6d28d9;
+        --accent-glow: rgba(139, 92, 246, 0.08);
+        --nav-bg: rgba(255, 255, 255, 0.85);
+        --overlay-bg: rgba(255, 255, 255, 0.6);
+        --search-overlay: rgba(255, 255, 255, 0.7);
+        --code-tab-header: rgba(248, 248, 250, 0.5);
+        color-scheme: light;
+    }
+}
+
+/* Theme transition */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+    transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Light mode Prism overrides */
+[data-theme="light"] pre[class*="language-"],
+[data-theme="light"] code[class*="language-"] {
+    color: var(--text) !important;
+    background: var(--bg-surface) !important;
+}
+[data-theme="light"] .token.comment,
+[data-theme="light"] .token.prolog,
+[data-theme="light"] .token.doctype,
+[data-theme="light"] .token.cdata { color: #6e7781; }
+[data-theme="light"] .token.punctuation { color: #24292f; }
+[data-theme="light"] .token.property,
+[data-theme="light"] .token.tag,
+[data-theme="light"] .token.boolean,
+[data-theme="light"] .token.number,
+[data-theme="light"] .token.constant,
+[data-theme="light"] .token.symbol { color: #0550ae; }
+[data-theme="light"] .token.selector,
+[data-theme="light"] .token.string,
+[data-theme="light"] .token.char,
+[data-theme="light"] .token.builtin { color: #0a3069; }
+[data-theme="light"] .token.operator,
+[data-theme="light"] .token.entity,
+[data-theme="light"] .token.url { color: #cf222e; }
+[data-theme="light"] .token.atrule,
+[data-theme="light"] .token.attr-value,
+[data-theme="light"] .token.keyword { color: #8250df; }
+[data-theme="light"] .token.function,
+[data-theme="light"] .token.class-name { color: #8250df; }
+[data-theme="light"] .token.regex,
+[data-theme="light"] .token.important,
+[data-theme="light"] .token.variable { color: #953800; }
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) pre[class*="language-"],
+    :root:not([data-theme="dark"]) code[class*="language-"] {
+        color: var(--text) !important;
+        background: var(--bg-surface) !important;
+    }
+    :root:not([data-theme="dark"]) .token.comment,
+    :root:not([data-theme="dark"]) .token.prolog,
+    :root:not([data-theme="dark"]) .token.doctype,
+    :root:not([data-theme="dark"]) .token.cdata { color: #6e7781; }
+    :root:not([data-theme="dark"]) .token.punctuation { color: #24292f; }
+    :root:not([data-theme="dark"]) .token.property,
+    :root:not([data-theme="dark"]) .token.tag,
+    :root:not([data-theme="dark"]) .token.boolean,
+    :root:not([data-theme="dark"]) .token.number,
+    :root:not([data-theme="dark"]) .token.constant,
+    :root:not([data-theme="dark"]) .token.symbol { color: #0550ae; }
+    :root:not([data-theme="dark"]) .token.selector,
+    :root:not([data-theme="dark"]) .token.string,
+    :root:not([data-theme="dark"]) .token.char,
+    :root:not([data-theme="dark"]) .token.builtin { color: #0a3069; }
+    :root:not([data-theme="dark"]) .token.operator,
+    :root:not([data-theme="dark"]) .token.entity,
+    :root:not([data-theme="dark"]) .token.url { color: #cf222e; }
+    :root:not([data-theme="dark"]) .token.atrule,
+    :root:not([data-theme="dark"]) .token.attr-value,
+    :root:not([data-theme="dark"]) .token.keyword { color: #8250df; }
+    :root:not([data-theme="dark"]) .token.function,
+    :root:not([data-theme="dark"]) .token.class-name { color: #8250df; }
+    :root:not([data-theme="dark"]) .token.regex,
+    :root:not([data-theme="dark"]) .token.important,
+    :root:not([data-theme="dark"]) .token.variable { color: #953800; }
 }
 
 /* ── Resets & Base ────────────────────────────────────────── */
@@ -109,7 +231,7 @@ code[class*="language-"] {
     right: 0;
     z-index: 50;
     height: var(--nav-height);
-    background: rgba(8, 8, 13, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
@@ -190,6 +312,26 @@ code[class*="language-"] {
     color: var(--text-bright);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+.theme-toggle:hover {
+    border-color: var(--border-accent);
+    color: var(--text-bright);
+}
+
 .version-badge {
     display: inline-flex;
     align-items: center;
@@ -208,7 +350,7 @@ code[class*="language-"] {
     position: fixed;
     inset: 0;
     z-index: 39;
-    background: rgba(8, 8, 13, 0.6);
+    background: var(--overlay-bg);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
 }
@@ -325,7 +467,7 @@ code[class*="language-"] {
 .code-tabs-header {
     display: flex;
     border-bottom: 1px solid var(--border);
-    background: rgba(17, 17, 26, 0.5);
+    background: var(--code-tab-header);
 }
 
 .code-tab-btn {
@@ -887,7 +1029,7 @@ code[class*="language-"] {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: rgba(8, 8, 13, 0.7);
+    background: var(--search-overlay);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     align-items: flex-start;

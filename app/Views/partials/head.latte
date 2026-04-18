@@ -19,17 +19,17 @@ tailwind.config = {
     theme: {
         extend: {
             colors: {
-                deep: '#08080d',
-                surface: '#11111a',
-                elevated: '#1a1a27',
-                border: '#1e1e2e',
-                'border-accent': 'rgba(139, 92, 246, 0.3)',
-                body: '#d4d4d8',
-                bright: '#fafafa',
-                muted: '#52525b',
-                accent: '#8b5cf6',
-                'accent-light': '#a78bfa',
-                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+                deep: 'var(--bg-deep)',
+                surface: 'var(--bg-surface)',
+                elevated: 'var(--bg-elevated)',
+                border: 'var(--border)',
+                'border-accent': 'var(--border-accent)',
+                body: 'var(--text)',
+                bright: 'var(--text-bright)',
+                muted: 'var(--text-muted)',
+                accent: 'var(--accent)',
+                'accent-light': 'var(--accent-light)',
+                'accent-glow': 'var(--accent-glow)',
             },
             fontFamily: {
                 body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -41,6 +41,7 @@ tailwind.config = {
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <link rel="stylesheet" href="{$leafBaseUrl}/assets/css/app.css">
+<script src="{$leafBaseUrl}/assets/js/theme.js"></script>
 {if defined('DEV_SERVER')}
 <script>
 (function() {
