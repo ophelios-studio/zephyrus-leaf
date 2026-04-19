@@ -26,8 +26,13 @@ final class DocsController extends Controller
     #[Get('/')]
     public function index(): Response
     {
-        $url = $this->contentLoader->getFirstPageUrl();
-        return Response::redirect($url);
+        // Render the landing template. Projects customize it via
+        // templates/landing.latte (binary tier) or app/Views/landing.latte
+        // (Composer tier). The template ships a generic welcome landing
+        // as a fallback.
+        return $this->render('landing', [
+            'title' => $this->leafConfig->name,
+        ]);
     }
 
     #[Get('/{section}/{slug}')]
