@@ -5,59 +5,98 @@ order: 1
 
 # Introduction
 
-Welcome to your new documentation site, powered by **Zephyrus Leaf**.
+Welcome to your new **Zephyrus Leaf** site. This page lives at `content/getting-started/introduction.md`. Edit it, save, and watch the browser reload.
 
-## What is Leaf?
+## What you just got
 
-Leaf is a static content site template built on the [Zephyrus](https://github.com/dadajuice/zephyrus2) PHP framework. It gives you:
+- A working documentation site at `localhost:8080`
+- Live reload when you edit anything under `content/`, `templates/`, or `public/`
+- Full-text search (press <kbd>⌘</kbd>+<kbd>K</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd>)
+- Dark and light themes (toggle in the nav)
+- A build command that produces deployable HTML in `dist/`
 
-- **Markdown-powered pages** with front matter, GFM tables, and syntax highlighting
-- **Live-reload** during development — edit a file, see changes instantly
-- **One-command static builds** — run `composer build` to generate a `dist/` folder ready for GitHub Pages
-- **Full-text search** — client-side fuzzy search across all your pages
-- **Dark theme** — a clean, professional design out of the box
+## Add a page
 
-## Quick start
-
-Edit this file at `content/getting-started/introduction.md` to start writing your own docs.
-
-### Adding pages
-
-Create a new `.md` file in any section folder under `content/`:
+Drop a new `.md` file anywhere under `content/`:
 
 ```
 content/
   getting-started/
-    introduction.md    <- you are here
-    installation.md    <- add more pages
+    introduction.md     <-- you are here
   guides/
-    deployment.md
+    my-first-guide.md   <-- new page
 ```
 
-Each file needs front matter with at least a `title` and `order`:
+Every page needs front matter:
 
 ```yaml
 ---
-title: Installation
-order: 2
+title: My First Guide
+order: 1
 ---
+
+# My First Guide
+
+Hello world.
 ```
 
-### Adding sections
+## Add a section
 
-Add new sections in `config.yml` under the `leaf.sections` key:
+Sections are top-level folders under `content/`. Register them in `config.yml`:
 
 ```yaml
 leaf:
   sections:
     getting-started: "Getting Started"
-    guides: "Guides"
+    guides: "Guides"            # new section
+    api: "API Reference"        # and another
 ```
 
-The order in the YAML file determines the sidebar order.
+The order in the YAML determines the sidebar order.
+
+## Markdown features
+
+All standard Markdown works, plus a few extras:
+
+### Code blocks with syntax highlighting
+
+```php
+function hello(string $name): string
+{
+    return "Hello, {$name}";
+}
+```
+
+```javascript
+const multiply = (a, b) => a * b;
+console.log(multiply(3, 4));
+```
+
+### Tables
+
+| Feature | Binary | Composer |
+|---------|--------|----------|
+| One-command install | ✓ | — |
+| Custom controllers | via `leaf eject` | ✓ |
+| Composer packages | via `leaf eject` | ✓ |
+| Zero runtime deps | ✓ | requires PHP + Composer |
+
+### Callouts
+
+> **Tip:** You can overlay any default template by dropping it at the same path under `templates/`. Try `templates/partials/nav.latte` to override the site navigation.
+
+### Inline code and links
+
+Reference commands inline with backticks: `leaf build`, `leaf dev`, `leaf init`.
+
+Links work with relative paths: see the [page anatomy guide](/getting-started/writing-content) for how to structure a page.
 
 ## Next steps
 
-- Edit `config.yml` to set your project name, version, and GitHub URL
-- Add your logo to `public/assets/images/` and update `app/Views/partials/nav.latte`
-- Run `composer build` to generate the static site
+1. Edit `config.yml` — set your project name, version, author, GitHub URL.
+2. Drop your logo into `public/assets/images/` and reference it in your templates.
+3. Write more pages under `content/`.
+4. Run `leaf build` to produce the deployable site in `dist/`.
+5. Push `dist/` to any static host: Netlify, Vercel, GitHub Pages, Cloudflare Pages, or your own server.
+
+When you're ready for more, check [Writing Content](/getting-started/writing-content) and [Deployment](/getting-started/deployment).
