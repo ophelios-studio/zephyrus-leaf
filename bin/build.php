@@ -16,6 +16,11 @@ $command = new BuildCommand($app);
 // Register every `app/Views/pages/{name}.latte` as a build path so PagesController
 // can render it. Projects add standalone pages by dropping files here (or via
 // `templates/pages/` in Binary CLI tier, which the binary merges at build time).
-$command->addPaths(PageDiscovery::discover(ROOT_DIR . '/app/Views'));
+try {
+    $command->addPaths(PageDiscovery::discover(ROOT_DIR . '/app/Views'));
+} catch (InvalidArgumentException $e) {
+    fwrite(STDERR, 'Build failed: ' . $e->getMessage() . "\n");
+    exit(1);
+}
 
 exit($command->run());
