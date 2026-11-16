@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Leaf\Config\LeafConfig;
+use Leaf\PageDiscovery;
 use Zephyrus\Controller\Controller;
 use Zephyrus\Http\Response;
 use Zephyrus\Rendering\RenderResponses;
@@ -26,7 +27,7 @@ final class PagesController extends Controller
     ) {
     }
 
-    #[Get('/{page}', constraints: ['page' => '[a-z0-9][a-z0-9-]*'])]
+    #[Get('/{page}', constraints: ['page' => PageDiscovery::NAME_PATTERN])]
     public function show(string $page): Response
     {
         $viewPath = ROOT_DIR . '/app/Views/pages/' . $page . '.latte';
