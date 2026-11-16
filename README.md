@@ -23,7 +23,7 @@ A static documentation site generator powered by [Zephyrus](https://github.com/z
 
 ```bash
 # Clone or create a new project
-composer create-project dadajuice/zephyrus-leaf my-docs
+composer create-project zephyrus-framework/leaf my-docs
 
 cd my-docs
 
