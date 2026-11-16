@@ -174,8 +174,12 @@
     // ── Helpers ─────────────────────────────────────────────────
     function loadIndex() {
         if (searchIndex) return;
-        var baseUrl = (document.querySelector('meta[name="leaf-base-url"]') || {}).content || '';
-        fetch(baseUrl + '/search.json')
+        var searchUrl = (document.querySelector('meta[name="leaf-search-url"]') || {}).content;
+        if (!searchUrl) {
+            var baseUrl = (document.querySelector('meta[name="leaf-base-url"]') || {}).content || '';
+            searchUrl = baseUrl + '/search.json';
+        }
+        fetch(searchUrl)
             .then(function (r) { return r.json(); })
             .then(function (data) { searchIndex = data; })
             .catch(function () { searchIndex = []; });

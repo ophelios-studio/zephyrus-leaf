@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="leaf-base-url" content="{$leafBaseUrl}">
+<meta name="leaf-search-url" content="{$leafBaseUrl}{if ($currentLocale ?? '') !== '' && ($currentLocale ?? '') !== ($defaultLocale ?? '')}/{$currentLocale}{/if}/search.json">
 <meta n:if="($pageDescription ?? '') !== ''" name="description" content="{$pageDescription}">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
