@@ -15,6 +15,7 @@
 {/block}
 
 {block content}
+{var $localePrefix = ($currentLocale ?? 'en') === ($defaultLocale ?? 'en') ? '' : '/' . $currentLocale}
 <div class="error-container">
     <div class="text-center">
         <div class="error-code">404</div>
@@ -24,7 +25,7 @@
             Maybe it was blown away by a gentle breeze.
         </p>
         <div class="error-links">
-            <a href="{$leafBaseUrl}/" class="error-link-primary">Documentation</a>
+            <a href="{$leafBaseUrl}{$localePrefix}/" class="error-link-primary">Documentation</a>
         </div>
     </div>
 </div>

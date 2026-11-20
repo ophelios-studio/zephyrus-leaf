@@ -1,6 +1,7 @@
 {layout '../layouts/docs.latte'}
 
 {block content}
+{var $localePrefix = ($currentLocale ?? 'en') === ($defaultLocale ?? 'en') ? '' : '/' . $currentLocale}
 <article class="docs-content">
     <div class="prose">
         {$content|noescape}
@@ -8,7 +9,7 @@
 
     <nav class="docs-pagination" n:if="$prevPage || $nextPage">
         {if $prevPage}
-        <a href="{$prevPage['url']}" class="pagination-link pagination-prev">
+        <a href="{$leafBaseUrl}{$localePrefix}/{$prevPage['section']}/{$prevPage['slug']}" class="pagination-link pagination-prev">
             <span class="pagination-label">&larr; Previous</span>
             <span class="pagination-title">{$prevPage['title']}</span>
         </a>
@@ -17,7 +18,7 @@
         {/if}
 
         {if $nextPage}
-        <a href="{$nextPage['url']}" class="pagination-link pagination-next">
+        <a href="{$leafBaseUrl}{$localePrefix}/{$nextPage['section']}/{$nextPage['slug']}" class="pagination-link pagination-next">
             <span class="pagination-label">Next &rarr;</span>
             <span class="pagination-title">{$nextPage['title']}</span>
         </a>

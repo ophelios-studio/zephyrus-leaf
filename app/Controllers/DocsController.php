@@ -32,6 +32,7 @@ final class DocsController extends Controller
         // as a fallback.
         return $this->render('landing', [
             'title' => $this->leafConfig->name,
+            'firstPage' => $this->contentLoader->getAllPages()[0] ?? null,
         ]);
     }
 
